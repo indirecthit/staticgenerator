@@ -23,6 +23,9 @@ class StaticGeneratorMiddleware(object):
             if getattr(settings, 'STATIC_GENERATOR_ANONYMOUS_ONLY', False) and not request.user.is_anonymous():
                 return response
 
+            if getattr(settings, 'STATIC_GENERATOR_IGNORE_GET_PARAMS', False) and len(request.GET) is not 0:
+                return response
+
             excluded = False
             for url in self.excluded_urls:
                 if url.match(request.path_info):
